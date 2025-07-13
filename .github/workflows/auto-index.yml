@@ -1,0 +1,35 @@
+name: 自動で index.html を作る
+
+on:
+  push:        # リポジトリに何か push（アップロード）されたら
+    branches: [ main ]   # main ブランチを監視
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: HTML 一覧を生成
+        run: |
+          (
+            echo '<!DOCTYPE html><meta charset="UTF-8"><h1>公開している HTML ファイルの一覧</h1><ul>'
+            # .git フォルダ以外から .html を探してリンクにする
+            find . -type f -name '*.html' ! -path './.git/*' | sed 's|^\./||' | sort |
+              while read f; do
+                printf '<li><a href="%s">%s</a></li>\n' "$f" "$f"
+              done
+            echo '</ul>'
+          ) > index.html
+
+      - name: 変更があればコミット
+        run: |
+          git config --global user.name  "github-actions[bot]"
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "index.html に変更なし"
+          else
+            git commit -m "🤖 auto-update index.html"
+            git push
+          fi
