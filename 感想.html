@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI動画生成の世界 - 映画監督のような創造体験</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: 'base',
+          securityLevel: 'loose',
+          fontFamily: 'sans-serif',
+          themeVariables: {
+            primaryColor: '#4CAF50',
+            primaryTextColor: '#fff',
+            primaryBorderColor: '#9575CD',
+            lineColor: '#009688',
+            secondaryColor: '#FFC107',
+            tertiaryColor: '#f0f0f0'
+          },
+          flowchart: {
+            curve: 'basis'
+          }
+        });
+      });
+    </script>
+    
+    <style>
+    :root {
+      --main-color: #4CAF50;
+      --accent-color-1: #9575CD;
+      --accent-color-2: #FFC107;
+      --accent-color-3: #009688;
+      --accent-color-4: #E91E63;
+      --background-color: #FAFAFA;
+      --text-color: #333;
+      --light-text-color: #FFF;
+      --border-color: #E0E0E0;
+    }
+    
+    body {
+      font-family: sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    
+    h1, h2, h3, h4 { 
+      color: var(--main-color); 
+      margin-bottom: 0.8em; 
+    }
+    
+    h1 { 
+      font-size: 2.2em; 
+      text-align: center; 
+      border-bottom: 2px solid var(--accent-color-2); 
+      padding-bottom: 10px; 
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      color: var(--accent-color-3); 
+      border-left: 5px solid var(--accent-color-3); 
+      padding-left: 10px; 
+      margin-top: 2em;
+    }
+    
+    h3 { 
+      font-size: 1.4em; 
+      color: var(--accent-color-1); 
+      margin-top: 1.5em; 
+    }
+    
+    strong { 
+      color: var(--accent-color-4); 
+    }
+    
+    ul, ol { 
+      padding-left: 25px; 
+    }
+    
+    li { 
+      margin-bottom: 0.5em; 
+    }
+    
+    p { 
+      margin-bottom: 1em; 
+    }
+    
+    .hero-section {
+        background: linear-gradient(135deg, var(--main-color), var(--accent-color-3));
+        color: var(--light-text-color);
+        padding: 40px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .hero-section h1 { 
+      color: var(--light-text-color); 
+      border-bottom: none; 
+      margin-bottom: 15px;
+    }
+    
+    .hero-section p { 
+      font-size: 1.2em; 
+      margin-bottom: 10px;
+    }
+    
+    .benefits-section ul li::before {
+        content: '✨ ';
+        color: var(--accent-color-2);
+        font-weight: bold;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+    
+    .process-section ol {
+      list-style: none;
+      counter-reset: step-counter;
+      padding-left: 0;
+    }
+    
+    .process-section li {
+      counter-increment: step-counter;
+      margin-bottom: 1em;
+      position: relative;
+      padding-left: 40px;
+    }
+    
+    .process-section li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      background-color: var(--accent-color-2);
+      color: var(--text-color);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+    }
+    
+    .quote {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-left: 5px solid var(--accent-color-1);
+      padding: 20px;
+      margin: 20px 0;
+      font-style: italic;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .positive-highlight {
+      background: linear-gradient(135deg, #fff3e0, #ffecb3);
+      border-left: 5px solid var(--accent-color-2);
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .faq-section dt {
+        font-weight: bold;
+        color: var(--accent-color-3);
+        margin-top: 1em;
+    }
+    
+    .faq-section dd {
+        margin-left: 1.5em;
+        margin-bottom: 1em;
+    }
+    
+    .mermaid {
+      margin-bottom: 1.5em;
+      text-align: center;
+    }
+    
+    .excitement-box {
+      background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+      border: 2px solid var(--main-color);
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 12px;
+      text-align: center;
+    }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+  <section class="hero-section">
+    <h1>🎬✨ AI動画生成で映画監督になる！</h1>
+    <p><strong>「あっという間に時間が過ぎる」</strong>ほど夢中になる創造体験</p>
+    <p><strong>「とても新鮮で楽しい」</strong>新しい世界の扉を開こう</p>
+    💫 <strong>ワクワクが止まらない</strong>創造の冒険が始まります！
+  </section>
+
+  <section class="benefits-section">
+    <h2>🎯 この内容から得られる素晴らしいこと</h2>
+    
+    <div class="excitement-box">
+      <h3>🌟 体験者の喜びの声</h3>
+      <p><strong>「初めて知ることばかりで、とても新鮮でした！」</strong><br>
+      <strong>「色々凄くてあっという間に時間が過ぎました！」</strong><br>
+      <strong>「とても楽しかったです！」</strong></p>
+    </div>
+    
+    <h3>🚀 驚きの学習内容 / トピック</h3>
+    <ul>
+      <li><strong>進化にびっくり！</strong>最新AI動画生成ツール（Vidu、Runway Gen4など）の圧倒的な可能性</li>
+      <li><strong>まさに映画監督！</strong>プロのような視点でシーンを構想・演出する方法</li>
+      <li><strong>魔法のような体験</strong> - プロンプトで思い描いた映像を現実化</li>
+      <li><strong>創造力を形に！</strong>動画編集ツール（iMovie、Canva、Vrew）との効果的な組み合わせ</li>
+      <li><strong>実践的で分かりやすい</strong>操作手順と制作プロセスの完全理解</li>
+      <li><strong>丁寧で親切な説明</strong>で誰でも理解できる学習体験</li>
+    </ul>
+    
+    <h3>💎 具体的にできるようになる素晴らしいこと</h3>
+    <ul>
+      <li><strong>自分だけの世界を創造</strong> - 想像力を映像として具現化する喜び</li>
+      <li><strong>映画監督のような達成感</strong>を味わいながらシーンを演出</li>
+      <li><strong>魔法のようなプロンプト作成</strong>で理想の映像を自由自在に生成</li>
+      <li><strong>プロ級の完成度</strong> - 音楽や音響効果を加えた感動的な動画制作</li>
+      <li><strong>新しい視点でエンターテイメントを楽しむ</strong> - YouTubeや映画の見方が変わる</li>
+      <li><strong>創作への挑戦意欲</strong>が湧き上がり、表現の幅が無限に広がる</li>
+    </ul>
+    
+    <h3>🌈 期待される素晴らしい変化</h3>
+    <div class="positive-highlight">
+      <p><strong>「動画生成なんて自分には敷居が高い気がしてましたが、今日の講座見て早速挑戦してみようと思います！」</strong></p>
+    </div>
+    <p>これまで<strong>「難しそう」</strong>と感じていた動画制作が<strong>「今すぐやってみたい！」</strong>に変わります。<strong>創造的な表現への強い挑戦意欲</strong>が生まれ、映画やYouTube動画を見る度に<strong>「自分ならこう作る」</strong>という新しい楽しみ方ができるようになります。日常的に<strong>ワクワクする発見と創造の喜び</strong>を体験できるようになります。</p>
+  </section>
+
+  <section class="proof-section">
+    <h2>💬 参加者の感動体験 / 具体的な効果</h2>
+    
+    <div class="quote">
+      <p><strong>「映画を作るというのは、まさしく自分自身が監督になって、どのようなシーンをどう撮るかを考え、指示（プロンプト）を出して形にしていく――そんな感じなのかなぁと感じました。」</strong></p>
+      <p><em>- 新しい視点を得た参加者</em></p>
+    </div>
+    
+    <div class="quote">
+      <p><strong>「自分で世界をつくる―― そんな感覚を少しでも体験できたことに、ワクワクしました！」</strong></p>
+      <p><em>- 創造の喜びを実感した参加者</em></p>
+    </div>
+    
+    <div class="quote">
+      <p><strong>「知らなかった世界を知ることができて、とても楽しかったです！こうした考え方や視点を知れたことは、とても大きな学びになりました。」</strong></p>
+      <p><em>- 大きな学びを得た参加者</em></p>
+    </div>
+
+    <div class="positive-highlight">
+      <p><strong>「ご夫婦でAI使って動画制作されてるって素敵すぎます！」</strong><br>
+      <strong>「進化していてびっくりしました」</strong><br>
+      <strong>「勉強になりました」</strong></p>
+    </div>
+
+    <pre class="mermaid">
+      mindmap
+        root)AI動画生成の魅力(
+          ::icon(fa fa-heart)
+          [驚きの技術進化]
+            びっくりするVidu
+            感動のRunway Gen4
+            予想を超える進歩
+          [ワクワク創造体験]
+            映画監督気分
+            世界構築の喜び
+            表現の自由度
+          [楽しい実践方法]
+            分かりやすい操作
+            親切な説明
+            すぐ試したくなる
+          [素晴らしい学習効果]
+            新鮮な発見
+            大きな学び
+            視点の変化
+    </pre>
+  </section>
+
+  <section class="process-section">
+    <h2>➡️ 楽しくて効果的なプロセス</h2>
+    
+    <div class="excitement-box">
+      <p><strong>「実際のツールを触ってるところを見せていただけるとより再現しやすい」</strong><br>
+      実践的で分かりやすい手順で、誰でも楽しく学べます！</p>
+    </div>
+    
+    <h3>🎨 夢が現実になる制作ステップ</h3>
+    <ol>
+      <li><strong>ワクワク構想タイム:</strong> 映画監督になったつもりで「こんなシーンを撮りたい！」を自由に想像</li>
+      <li><strong>魔法のプロンプト作成:</strong> 思い描いた映像を効果的な言葉（指示）に変換する楽しい作業</li>
+      <li><strong>感動のAI生成:</strong> VidやRunway Gen4で実際に動画が生まれる瞬間を体験</li>
+      <li><strong>クリエイティブ編集:</strong> iMovie、Canva、Vrewで音楽や効果を加えて完成度アップ</li>
+      <li><strong>達成感の完成:</strong> 自分だけの世界を形にした感動的な動画の誕生</li>
+    </ol>
+    
+    <pre class="mermaid">
+      graph TD
+          Start[💡 ワクワクするアイデア] --> A[🎬 映画監督的シーン設計<br/>想像力全開！];
+          A --> B[✨ 魔法のプロンプト作成<br/>言葉で映像を描く];
+          B --> C[🚀 AI動画生成<br/>Vidu/Runway Gen4で実現];
+          C --> D[🎵 楽しい編集・加工<br/>iMovie/Canva/Vrew];
+          D --> E[🏆 感動の完成作品<br/>自分だけの世界];
+          
+          style Start fill:#FFC107,color:#000
+          style E fill:#4CAF50,color:#fff
+          style C fill:#9575CD,color:#fff
+          style A fill:#FF9800,color:#fff
+          style B fill:#2196F3,color:#fff
+          style D fill:#FF5722,color:#fff
+    </pre>
+  </section>
+
+  <section class="faq-section">
+    <h2>❓ よくある嬉しい疑問 (前向きQ&A)</h2>
+    <dl>
+      <dt>Q1: 初心者でも本当に楽しく学べるの？</dt>
+      <dd>A1: <strong>「動画生成なんて自分には敷居が高い気がしてましたが、今日の講座見て早速挑戦してみようと思います！」</strong>という声が示すように、丁寧な説明で誰でも楽しく始められます。<strong>「とても新鮮で楽しい」</strong>体験が待っています！</dd>
+      
+      <dt>Q2: 実際の操作も分かりやすく教えてもらえる？</dt>
+      <dd>A2: <strong>「実際のツールを触ってるところを見せていただけるとより再現しやすい」</strong>というリクエストに応えて、実践的な操作デモンストレーションで直感的に理解できます。</dd>
+      
+      <dt>Q3: プロンプト作成のコツも詳しく学べる？</dt>
+      <dd>A3: <strong>「Midjourneyのプロンプト生成について詳しく知りたい」</strong>という要望にも対応。効果的な映像生成のための具体的テクニックを楽しく学べます。</dd>
+      
+      <dt>Q4: 編集ソフトとの組み合わせ方も教えてもらえる？</dt>
+      <dd>A4: <strong>「iMovie（もしくはCanvaやVrew）に取り込んで、音楽や音を加えて編集する」</strong>実践的な手法を、分かりやすく丁寧に説明します。</dd>
+      
+      <dt>Q5: 受講後はどんな気持ちになれる？</dt>
+      <dd>A5: <strong>「あっという間に時間が過ぎて」「ワクワクして」「早速挑戦したくなる」</strong>という感動体験ができます。新しい創造の世界への扉が開かれ、表現の可能性が無限に広がります！</dd>
+    </dl>
+  </section>
+
+  <section class="excitement-box" style="margin-top: 2em;">
+    <h2>🎉 最後に</h2>
+    <p><strong>「知らなかった世界を知ることができて、とても楽しかった」</strong><br>
+    <strong>「大きな学びになりました」</strong><br>
+    <strong>「素敵すぎます！」</strong></p>
+    <p>あなたも今すぐ、この<strong>ワクワクする創造の世界</strong>に飛び込んでみませんか？🚀✨</p>
+  </section>
+
+</div>
+</body>
+</html>
