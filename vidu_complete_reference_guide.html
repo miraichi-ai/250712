@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidu AI リファレンス機能完全操作ガイド</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Mermaid.js の読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'base',
+                securityLevel: 'loose',
+                fontFamily: '"Kaisei Decol", sans-serif',
+                themeVariables: {
+                    primaryColor: '#4CAF50',
+                    primaryTextColor: '#fff',
+                    primaryBorderColor: '#E91E63',
+                    lineColor: '#009688',
+                    secondaryColor: '#FFC107',
+                    tertiaryColor: '#9575CD'
+                },
+                flowchart: {
+                    cornerRadius: 15,
+                    curve: 'cardinal',
+                    htmlLabels: true
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        :root {
+            --main-color: #4CAF50;
+            --accent-1: #9575CD;
+            --accent-2: #FFC107;
+            --accent-3: #009688;
+            --accent-4: #E91E63;
+            --vidu-primary: #2E86AB;
+            --vidu-secondary: #5ba3c5;
+            --bg-color: #FAFAFA;
+            --text-color: #333;
+            --card-shadow: 0 8px 32px rgba(46, 134, 171, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kaisei Decol', sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-color) 0%, #f0f8ff 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, var(--vidu-primary), var(--vidu-secondary));
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="25" cy="25" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--vidu-primary), var(--vidu-secondary));
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, var(--vidu-primary), var(--vidu-secondary));
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: var(--vidu-primary);
+            margin: 0;
+        }
+
+        .workflow-container {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            border-radius: 16px;
+            border: 2px solid var(--accent-1);
+        }
+
+        .mermaid {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .step-card {
+            background: linear-gradient(135deg, #f8fffe 0%, #f0f8f7 100%);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border-left: 6px solid var(--vidu-primary);
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 50px rgba(46, 134, 171, 0.2);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--vidu-primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .step-title {
+            color: var(--vidu-primary);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .step-description {
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .promode-section {
+            background: linear-gradient(135deg, #fff9e6, #ffeaa7);
+            border: 3px solid var(--accent-2);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .promode-title {
+            color: var(--accent-2);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prompt-example {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent-2);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .settings-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .setting-category {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--accent-3);
+        }
+
+        .setting-category-title {
+            color: var(--accent-3);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .setting-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .setting-options li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .setting-options li:before {
+            content: "⚙️";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            font-size: 0.8rem;
+        }
+
+        .version-comparison {
+            margin: 30px 0;
+        }
+
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .version-card {
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .q1-card {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border-left: 6px solid var(--main-color);
+        }
+
+        .v2-card {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-left: 6px solid var(--accent-2);
+        }
+
+        .v15-card {
+            background: linear-gradient(135deg, #ffeef2, #fff0f5);
+            border-left: 6px solid var(--accent-4);
+        }
+
+        .version-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .q1-card .version-title {
+            color: var(--main-color);
+        }
+
+        .v2-card .version-title {
+            color: var(--accent-2);
+        }
+
+        .v15-card .version-title {
+            color: var(--accent-4);
+        }
+
+        .version-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .version-features li {
+            padding: 6px 0;
+            position: relative;
+            padding-left: 25px;
+            line-height: 1.6;
+        }
+
+        .q1-card .version-features li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 6px;
+        }
+
+        .v2-card .version-features li:before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            top: 6px;
+        }
+
+        .v15-card .version-features li:before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+            top: 6px;
+        }
+
+        .motion-settings {
+            background: linear-gradient(135deg, #f0f4ff, #e8f0ff);
+            border: 2px solid var(--accent-1);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .motion-title {
+            color: var(--accent-1);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .motion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .motion-option {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-1);
+            text-align: center;
+        }
+
+        .motion-level {
+            font-weight: bold;
+            color: var(--accent-1);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            border: 2px solid var(--main-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .tip-box::before {
+            content: "💡";
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffeef2, #fff0f5);
+            border: 2px solid var(--accent-4);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .warning-box::before {
+            content: "⚠️";
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+        }
+
+        .pricing-info {
+            background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+            border: 2px solid var(--accent-1);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .pricing-title {
+            color: var(--accent-1);
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-matrix {
+                grid-template-columns: 1fr;
+            }
+            
+            .version-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .motion-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎥 Vidu AI 完全操作ガイド</h1>
+            <p class="subtitle">プロンプト作成からバージョン選択まで - 実践的使いこなし術</p>
+        </header>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🔗</div>
+                <h2>リファレンス画像登録・管理システム</h2>
+            </div>
+
+            <div class="workflow-container">
+                <h3>🔄 My Referenceデータ管理フロー</h3>
+                <div class="mermaid">
+                    flowchart TD
+                        A[リファレンスボタン<br/>クリック] --> B[画像登録ウィンドウ<br/>表示]
+                        B --> C[最大3枚まで<br/>画像登録]
+                        C --> D[名前付けして<br/>保存]
+                        D --> E[リファレンスデータ<br/>として登録完了]
+                        
+                        F[キャラクター正面] --> C
+                        G[キャラクター側面] --> C
+                        H[キャラクター背面] --> C
+                        
+                        E --> I[呼び出し時<br/>簡単読み込み]
+                        I --> J[毎回登録不要<br/>効率化]
+                        
+                        K[3つの画像を<br/>1つのセットで管理] --> E
+                        
+                        style A fill:#2E86AB,stroke:#333,color:#fff
+                        style E fill:#4CAF50,stroke:#333,color:#fff
+                        style J fill:#FFC107,stroke:#333,color:#333
+                </div>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-title">📂 My Reference機能</div>
+                    <div class="step-description">
+                        事前に画像たちを<strong>リファレンスセット</strong>として保存しておく専用機能。最大3枚まで登録可能で、一度保存すれば毎回登録不要
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-title">📝 プロンプト配置調整</div>
+                    <div class="step-description">
+                        <strong>Ctrl+X</strong>でリファレンステキストの位置を移動。AIが理解しやすいよう、関連プロンプトの後ろにリファレンスを配置
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-title">🔵 青いテキスト表示</div>
+                    <div class="step-description">
+                        テストクラスをクリックすると<strong>青いメッセージ</strong>が表示。これがリファレンステキストの証明で、AIが参照画像の意味を理解するための重要な指標
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>Pro Mode プロンプト自動最適化</h2>
+            </div>
+
+            <div class="promode-section">
+                <div class="promode-title">🚀 AIによる自動プロンプト再構成</div>
+                
+                <h4>📝 元の入力例：</h4>
+                <div class="prompt-example">
+                    A young American man <strong>Test</strong> in a navy blue hoodie and shorts pants is slumped on the floor, head bowed. A wooden spear lies beside him. He is amidst numerous piles of furniture inside an windowless enclosed warehouse. The atmosphere is post-apocalyptic. The camera slowly zooms in.
+                </div>
+
+                <h4>🤖 AI再構成後（抜粋）：</h4>
+                <div class="prompt-example">
+                    <strong>Subject:</strong><br/>
+                    A young American man with dark brown hair, fair skin, and freckles, wearing a dark navy blue hoodie and khaki cargo shorts, is slumped on the floor, head bowed in exhaustion...<br/><br/>
+                    <strong>Environment:</strong><br/>
+                    The setting is a windowless, enclosed warehouse filled with numerous piles of discarded furniture, creating a chaotic and claustrophobic atmosphere...
+                </div>
+
+                <div class="tip-box">
+                    <strong>💡 Pro Mode活用法：</strong><br/>
+                    簡単なプロンプトをAIが自動的に詳細化。GPTやGeminiで作成したプロンプトでも問題なく使用可能
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>詳細設定パラメータ</h2>
+            </div>
+
+            <div class="settings-matrix">
+                <div class="setting-category">
+                    <div class="setting-category-title">🎨 Style</div>
+                    <ul class="setting-options">
+                        <li>Realistic（リアリスティック）</li>
+                        <li>Animation（アニメーション）</li>
+                        <li>3D Rendering（3Dレンダリング）</li>
+                        <li>Pixel Art（ピクセルアート）</li>
+                    </ul>
+                </div>
+
+                <div class="setting-category">
+                    <div class="setting-category-title">📏 Shot Size</div>
+                    <ul class="setting-options">
+                        <li>Extremely Wide Shot（超広角）</li>
+                        <li>Wide Shot（広角）</li>
+                        <li>Medium Shot（ミディアム）</li>
+                        <li>Close Up（クローズアップ）</li>
+                        <li>Extremely Close Up（超クローズアップ）</li>
+                    </ul>
+                </div>
+
+                <div class="setting-category">
+                    <div class="setting-category-title">🔍 Focal Length</div>
+                    <ul class="setting-options">
+                        <li>Wide Angle（広角）</li>
+                        <li>Standard（標準）</li>
+                        <li>Telephoto（望遠）</li>
+                        <li>Fisheye（魚眼）</li>
+                    </ul>
+                </div>
+
+                <div class="setting-category">
+                    <div class="setting-category-title">📐 Composition</div>
+                    <ul class="setting-options">
+                        <li>Diagonal Composition（対角線構図）</li>
+                        <li>Rule of Thirds（三分割法）</li>
+                        <li>Symmetrical Composition（左右対称）</li>
+                        <li>Over Shoulder（肩越し）</li>
+                        <li>Dutch Angle（ダッチアングル）</li>
+                    </ul>
+                </div>
+
+                <div class="setting-category">
+                    <div class="setting-category-title">📹 Camera Angle</div>
+                    <ul class="setting-options">
+                        <li>Low Angle（ローアングル）</li>
+                        <li>High Angle（ハイアングル）</li>
+                        <li>Eye Level（アイレベル）</li>
+                        <li>Bird View（俯瞰）</li>
+                        <li>Snorri Cam（主観視点）</li>
+                    </ul>
+                </div>
+
+                <div class="setting-category">
+                    <div class="setting-category-title">🎥 Camera Movement</div>
+                    <ul class="setting-options">
+                        <li>Track Left/Right（トラック移動）</li>
+                        <li>Pan Left/Right（パン移動）</li>
+                        <li>Move Up/Down（上下移動）</li>
+                        <li>Tilt Up/Down（チルト）</li>
+                        <li>Zoom In/Out（ズーム）</li>
+                        <li>Clockwise Rotation（回転）</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 設定のコツ：</strong><br/>
+                スタイルは最大3つまで選択が理想的。モーションレベルは1つのみ選択可能。カメラやAI動画の専門知識がある方はPro Modeを活用して詳細制御が可能
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🔢</div>
+                <h2>バージョン別性能比較</h2>
+            </div>
+
+            <div class="version-comparison">
+                <div class="version-grid">
+                    <div class="version-card q1-card">
+                        <div class="version-title">🏆 Vidu Q1（最新・推奨）</div>
+                        <ul class="version-features">
+                            <li><strong>最高画質</strong>で安定的な映像生成</li>
+                            <li><strong>破綻現象がほとんど発生しない</strong></li>
+                            <li>高い一貫性を維持</li>
+                            <li>アップスケール不要の高解像度出力</li>
+                            <li>生成時間は長め</li>
+                            <li>激しい動きの表現は苦手</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-card v2-card">
+                        <div class="version-title">⚡ Vidu 2.0</div>
+                        <ul class="version-features">
+                            <li><strong>ダイナミックな動き</strong>の表現が可能</li>
+                            <li>カメラワークが豊富</li>
+                            <li>激しいアクションシーンに適用</li>
+                            <li>破綻が発生しやすい</li>
+                            <li>画質はQ1より劣る</li>
+                            <li>ノイズが発生する場合あり</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-card v15-card">
+                        <div class="version-title">⚠️ Vidu 1.5（非推奨）</div>
+                        <ul class="version-features">
+                            <li>最も大きな動きが可能</li>
+                            <li>破綻が激しい</li>
+                            <li>画質が著しく悪い</li>
+                            <li>一貫性の維持が困難</li>
+                            <li>現在はほとんど使用されない</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ バージョン選択の指針：</strong><br/>
+                安定したシーンには<strong>Vidu Q1</strong>、激しい動きが必要な場合は<strong>Vidu 2.0</strong>を使用。Vidu 1.5は品質の問題で推奨されません
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">🌊</div>
+                <h2>Motion Level 動き制御システム</h2>
+            </div>
+
+            <div class="motion-settings">
+                <div class="motion-title">🎬 シーン別動き設定ガイド</div>
+                
+                <div class="motion-grid">
+                    <div class="motion-option">
+                        <div class="motion-level">🔄 Auto</div>
+                        <p>Viduに慣れていない場合は<strong>この設定のみで十分</strong></p>
+                    </div>
+
+                    <div class="motion-option">
+                        <div class="motion-level">🔇 Small</div>
+                        <p><strong>静的なシーン</strong>、緊張感のある状況、ゆっくりとしたカメラワーク</p>
+                    </div>
+
+                    <div class="motion-option">
+                        <div class="motion-level">⚡ Medium</div>
+                        <p><strong>最も一般的</strong>な設定。日常的なシーンで幅広く使用</p>
+                    </div>
+
+                    <div class="motion-option">
+                        <div class="motion-level">🚀 Large</div>
+                        <p><strong>走るシーン・戦闘シーン</strong>など激しい動きが必要な場面<br/>※2.0以下では破綻リスク高</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-container">
+                <h3>🎯 実践的動き設定フロー</h3>
+                <div class="mermaid">
+                    flowchart TD
+                        A[シーンの性質を分析] --> B{動きの激しさ}
+                        B -->|静的・緊張感| C[Small設定<br/>ゆっくりとした動き]
+                        B -->|一般的| D[Medium設定<br/>標準的な動き]
+                        B -->|激しい動作| E[Large設定<br/>ダイナミックな動き]
+                        
+                        C --> F[Vidu Q1推奨<br/>安定性重視]
+                        D --> G[Q1またはV2.0<br/>バランス型]
+                        E --> H[Vidu 2.0必須<br/>動き重視]
+                        
+                        I[初心者] --> J[Auto設定<br/>自動最適化]
+                        J --> K[経験積み重ね後<br/>手動設定に移行]
+                        
+                        style A fill:#2E86AB,stroke:#333,color:#fff
+                        style C fill:#4CAF50,stroke:#333,color:#fff
+                        style E fill:#E91E63,stroke:#333,color:#fff
+                        style J fill:#FFC107,stroke:#333,color:#333
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon">💰</div>
+                <h2>料金プランと最適化のコツ</h2>
+            </div>
+
+            <div class="pricing-info">
+                <div class="pricing-title">💎 Ultimate Plan特典</div>
+                <p><strong>クレジット消費なし</strong>で無制限生成が可能<br/>
+                ただし、人が集まる時間帯は生成速度が低下</p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⏰ 避けるべき時間帯：</strong><br/>
+                <strong>午後3時から夜9時の間</strong>はサーバー負荷が高く、生成速度が著しく低下します。朝や深夜の利用が推奨されます
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 効率的利用のコツ：</strong><br/>
+                • アップスケール機能の進化により、Q1発売後は内部で直接アップスケール<br/>
+                • 9.0.1K出力でアップスケールより高画質な結果を取得<br/>
+                • クレジット消費時は時間差をあまり感じないが、無料枠では時間帯を考慮
+            </div>
+
+            <div class="workflow-container">
+                <h3>🕐 時間帯別推奨利用法</h3>
+                <div class="mermaid">
+                    flowchart LR
+                        A[時間帯確認] --> B{現在時刻}
+                        B -->|朝 6-15時| C[最適時間帯<br/>高速生成]
+                        B -->|昼 15-21時| D[混雑時間帯<br/>生成遅延]
+                        B -->|夜 21-6時| E[推奨時間帯<br/>安定生成]
+                        
+                        C --> F[複数バリエーション<br/>一気に生成]
+                        D --> G[待機推奨<br/>または他作業]
+                        E --> H[高品質設定<br/>じっくり制作]
+                        
+                        style C fill:#4CAF50,stroke:#333,color:#fff
+                        style D fill:#E91E63,stroke:#333,color:#fff
+                        style E fill:#2E86AB,stroke:#333,color:#fff
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

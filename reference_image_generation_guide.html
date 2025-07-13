@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reference機能用画像生成完全ガイド</title>
+    
+    <!-- Mermaid.js の読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'base',
+                securityLevel: 'loose',
+                fontFamily: '"Kaisei Decol", sans-serif',
+                themeVariables: {
+                    primaryColor: '#4CAF50',
+                    primaryTextColor: '#fff',
+                    primaryBorderColor: '#F2798F',
+                    lineColor: '#009688',
+                    secondaryColor: '#FFC107',
+                    tertiaryColor: '#F2D1CE'
+                },
+                flowchart: {
+                    cornerRadius: 15,
+                    curve: 'cardinal',
+                    htmlLabels: true
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        :root {
+            --main-color: #4CAF50;
+            --accent-1: #9575CD;
+            --accent-2: #FFC107;
+            --accent-3: #009688;
+            --accent-4: #E91E63;
+            --bg-color: #FAFAFA;
+            --text-color: #333;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-color) 0%, #ffffff 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--main-color) 0%, var(--accent-3) 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🖼️';
+            font-size: 4rem;
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            opacity: 0.3;
+        }
+
+        .header::after {
+            content: '🔗';
+            font-size: 4rem;
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            opacity: 0.3;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid var(--main-color);
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--main-color);
+            font-weight: bold;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+
+        .icon-character { background: var(--accent-1); }
+        .icon-background { background: var(--accent-3); }
+        .icon-product { background: var(--accent-2); }
+        .icon-scene { background: var(--accent-4); }
+        .icon-workflow { background: var(--main-color); }
+
+        .image-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid transparent;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--main-color), var(--accent-3));
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .process-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .process-steps li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .process-steps li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 8px;
+            background: var(--main-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .process-steps {
+            counter-reset: step-counter;
+        }
+
+        .tool-recommendation {
+            background: linear-gradient(135deg, var(--accent-2) 0%, #fff3c4 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent-2);
+        }
+
+        .tool-recommendation strong {
+            color: #333;
+        }
+
+        .workflow-container {
+            margin: 30px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            border: 2px solid var(--accent-3);
+            box-shadow: var(--shadow);
+        }
+
+        .workflow-title {
+            text-align: center;
+            font-size: 1.4rem;
+            color: var(--accent-3);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--main-color) 0%, #81C784 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .highlight-box strong {
+            color: #fff;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .before-card {
+            background: linear-gradient(135deg, #ffebee 0%, #ffffff 100%);
+            border: 2px solid var(--accent-4);
+        }
+
+        .after-card {
+            background: linear-gradient(135deg, #e8f5e8 0%, #ffffff 100%);
+            border: 2px solid var(--main-color);
+        }
+
+        .method-tips {
+            background: linear-gradient(135deg, var(--accent-1) 0%, #D1C4E9 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .simple-prompt {
+            background: #f8f9fa;
+            border: 2px dashed var(--accent-3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1.1rem;
+            color: var(--accent-3);
+            font-weight: bold;
+        }
+
+        .limitations {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffffff 100%);
+            border: 2px solid var(--accent-2);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .business-tip {
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+            border: 2px solid #2196F3;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .image-type-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Reference機能用画像生成完全ガイド</h1>
+            <div class="subtitle">4つの画像タイプで実現する高品質AI動画制作</div>
+        </div>
+
+        <div class="content">
+            <!-- 概要セクション -->
+            <div class="section">
+                <h2 class="section-title">
+                    <div class="icon icon-workflow">🎯</div>
+                    Reference機能の核心
+                </h2>
+                
+                <div class="highlight-box">
+                    <strong>🔑 結論：</strong> Reference機能は画像の背景やポーズに従って動画を生成するため、目的に応じた4種類の参照画像を適切に準備することが成功の鍵となります。
+                </div>
+
+                <div class="workflow-container">
+                    <div class="workflow-title">Reference画像生成の全体フロー</div>
+                    <div class="mermaid">
+                        flowchart TD
+                            A[Reference機能活用] --> B[キャラクター設定画像]
+                            A --> C[背景画像]
+                            A --> D[商品画像]
+                            A --> E[シーン画像]
+                            
+                            B --> F[正面・側面・背面]
+                            C --> G[環境・場所設定]
+                            D --> H[ブランド・商品露出]
+                            E --> I[複雑な構図・ポーズ]
+                            
+                            F --> J[動画生成]
+                            G --> J
+                            H --> J
+                            I --> J
+                            
+                            J --> K[高品質AI動画完成]
+                            
+                            style A fill:#4CAF50,stroke:#2E7D32,color:#fff
+                            style K fill:#FFC107,stroke:#F57C00,color:#333
+                            style B fill:#9575CD,stroke:#7B1FA2,color:#fff
+                            style C fill:#009688,stroke:#00695C,color:#fff
+                            style D fill:#FFC107,stroke:#F57C00,color:#333
+                            style E fill:#E91E63,stroke:#C2185B,color:#fff
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4つの画像タイプ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <div class="icon icon-character">📸</div>
+                    Reference用画像の4つのタイプ
+                </h2>
+
+                <div class="image-type-grid">
+                    <!-- キャラクター設定画像 -->
+                    <div class="image-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: var(--accent-1);">👤</div>
+                            <div>
+                                <div class="card-title">キャラクター設定画像</div>
+                                <div class="card-subtitle">一貫性維持のための基本設定</div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-recommendation">
+                            <strong>💡 推奨ツール：</strong> Midjourney（正面） + GPT（側面・背面）
+                        </div>
+                        
+                        <ul class="process-steps">
+                            <li><strong>白い背景</strong>での正面画像をMidjourneyで生成</li>
+                            <li><strong>側面画像</strong>をGPTで効率的に作成</li>
+                            <li><strong>背面画像</strong>をGPTで補完生成</li>
+                            <li>3つの角度で<strong>完全な一貫性</strong>を確保</li>
+                        </ul>
+                        
+                        <div class="simple-prompt">
+                            「このキャラクターの側面」
+                        </div>
+                        
+                        <div class="method-tips">
+                            <strong>🚀 効率化のコツ：</strong> プロンプトはシンプルに！複雑な指示は不要で、「このキャラクターの側面」程度で十分な品質が得られます。
+                        </div>
+                    </div>
+
+                    <!-- 背景画像 -->
+                    <div class="image-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: var(--accent-3);">🏞️</div>
+                            <div>
+                                <div class="card-title">背景画像</div>
+                                <div class="card-subtitle">環境・場所の一貫性維持</div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-recommendation">
+                            <strong>💡 生成方法：</strong> 画像生成AI直接作成 または フレーム抽出
+                        </div>
+                        
+                        <ul class="process-steps">
+                            <li><strong>画像生成AI</strong>で直接シーン背景を作成</li>
+                            <li>既存動画から<strong>フレーム抽出</strong>して活用</li>
+                            <li><strong>キャラクター除去</strong>でクリーンな背景作成</li>
+                            <li>同じ背景で<strong>複数シーン</strong>の一貫性確保</li>
+                        </ul>
+                        
+                        <div class="simple-prompt">
+                            「このキャラクターを消してください」
+                        </div>
+                        
+                        <div class="method-tips">
+                            <strong>🎨 背景活用法：</strong> GPTやRunway Gen-4などのReference対応ツールに画像を入れ、簡単なプロンプトでキャラクター除去が可能です。
+                        </div>
+                    </div>
+
+                    <!-- 商品画像 -->
+                    <div class="image-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: var(--accent-2);">🥤</div>
+                            <div>
+                                <div class="card-title">商品画像</div>
+                                <div class="card-subtitle">ブランド・商品の映像使用</div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-recommendation">
+                            <strong>💡 活用用途：</strong> 自社商品アピール・収益化・リアリティ向上
+                        </div>
+                        
+                        <ul class="process-steps">
+                            <li><strong>自社商品</strong>のブランディング活用</li>
+                            <li><strong>リアル商品</strong>の撮影画像も使用可能</li>
+                            <li><strong>文字デザイン</strong>対応ツールで作成</li>
+                            <li><strong>自然な商品露出</strong>で動画作成</li>
+                        </ul>
+                        
+                        <div class="limitations">
+                            <strong>⚠️ 現在の制限：</strong> 複雑な漢字の完全表現はまだ困難な場合があります。しかし、技術進歩により半年以内には解決される見込みです。
+                        </div>
+                        
+                        <div class="business-tip">
+                            <strong>💰 収益化のポイント：</strong> 弁護士からのアドバイスにより、企業商品を適切に使用することで投資や収益機会の獲得が可能です。
+                        </div>
+                    </div>
+
+                    <!-- シーン画像 -->
+                    <div class="image-card">
+                        <div class="card-header">
+                            <div class="card-icon" style="background: var(--accent-4);">🎭</div>
+                            <div>
+                                <div class="card-title">シーン画像</div>
+                                <div class="card-subtitle">複雑な構図・ポーズの表現</div>
+                            </div>
+                        </div>
+                        
+                        <div class="tool-recommendation">
+                            <strong>💡 推奨ツール：</strong> Runway Gen-4, GPT(Sora)
+                        </div>
+                        
+                        <ul class="process-steps">
+                            <li><strong>複雑な動き</strong>や位置関係の事前設計</li>
+                            <li><strong>キャラクターと背景</strong>を組み合わせたシーン作成</li>
+                            <li><strong>特定の構図・ポーズ</strong>を正確に表現</li>
+                            <li><strong>階段を登る</strong>などの困難なシーンも実現</li>
+                        </ul>
+                        
+                        <div class="highlight-box">
+                            <strong>🎯 重要原理：</strong> Reference機能は基本的にReference画像の背景やポーズに従います。特定の構図やポーズが必要な場合は、このタイプの画像が必須です。
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 効率的な制作プロセス -->
+            <div class="section">
+                <h2 class="section-title">
+                    <div class="icon icon-workflow">⚡</div>
+                    効率的な制作プロセス
+                </h2>
+
+                <div class="comparison-grid">
+                    <div class="image-card before-card">
+                        <h3 style="color: var(--accent-4); margin-bottom: 15px;">❌ 従来の方法</h3>
+                        <ul class="process-steps">
+                            <li>複雑で詳細なプロンプト作成</li>
+                            <li>何度も試行錯誤して画像生成</li>
+                            <li>一貫性のない結果に悩む</li>
+                            <li>大量の画像生成が必要</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="image-card after-card">
+                        <h3 style="color: var(--main-color); margin-bottom: 15px;">✅ Reference活用法</h3>
+                        <ul class="process-steps">
+                            <li>シンプルなプロンプトで十分</li>
+                            <li>Reference画像で方向性を明確化</li>
+                            <li>高い一貫性を維持</li>
+                            <li>最小限の画像で最大効果</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="workflow-container">
+                    <div class="workflow-title">Reference画像を使った動画生成フロー</div>
+                    <div class="mermaid">
+                        flowchart LR
+                            A[望む動画のイメージ] --> B[適切なReference画像選択]
+                            B --> C[シンプルなプロンプト作成]
+                            C --> D[AIに方向性を理解させる]
+                            D --> E[期待通りの動画生成]
+                            
+                            F[キャラクター画像] --> B
+                            G[背景画像] --> B
+                            H[商品画像] --> B
+                            I[シーン画像] --> B
+                            
+                            style A fill:#9575CD,stroke:#7B1FA2,color:#fff
+                            style E fill:#4CAF50,stroke:#2E7D32,color:#fff
+                            style D fill:#FFC107,stroke:#F57C00,color:#333
+                    </div>
+                </div>
+
+                <div class="method-tips">
+                    <strong>🧠 理解のコツ：</strong> AIに作ってほしい動画は「この画像」と「このプロンプト」を合わせて、「こういうことですよ」と細かく教えて理解させることが重要です。
+                </div>
+            </div>
+
+            <!-- 実践的なコツとノウハウ -->
+            <div class="section">
+                <h2 class="section-title">
+                    <div class="icon icon-scene">💡</div>
+                    実践的なコツとノウハウ
+                </h2>
+
+                <div class="highlight-box">
+                    <strong>🎬 プロの秘訣：</strong> Reference機能を最大限活用するためには、各画像タイプの特性を理解し、目的に応じて適切に組み合わせることが成功の鍵です。
+                </div>
+
+                <div class="workflow-container">
+                    <div class="workflow-title">成功する動画制作の要素</div>
+                    <div class="mermaid">
+                        graph TD
+                            A[成功する動画制作] --> B[適切な画像選択]
+                            A --> C[シンプルなプロンプト]
+                            A --> D[AIとの対話]
+                            
+                            B --> E[キャラクター一貫性]
+                            B --> F[背景の統一感]
+                            B --> G[商品の自然な露出]
+                            B --> H[複雑なシーンの実現]
+                            
+                            C --> I[「側面」「消して」など]
+                            D --> J[方向性の明確化]
+                            D --> K[期待値の調整]
+                            
+                            style A fill:#4CAF50,stroke:#2E7D32,color:#fff
+                            style I fill:#FFC107,stroke:#F57C00,color:#333
+                    </div>
+                </div>
+
+                <div class="business-tip">
+                    <strong>💰 収益化の視点：</strong> 「お金が欲しい貧乏クリエイター」でも、Reference機能を適切に活用することで、企業レベルの動画制作が可能になります。投資や案件獲得のチャンスが大幅に拡大します。
+                </div>
+
+                <div class="limitations">
+                    <strong>⚠️ 現在の課題と未来：</strong>
+                    <ul style="margin-top: 15px;">
+                        <li>複雑な漢字表現の制限（半年以内に改善予定）</li>
+                        <li>100%の一貫性維持は困難（技術進歩で解決見込み）</li>
+                        <li>細かい要素（ほくろなど）の変化は避けられない</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>🚀 未来への展望：</strong> 現在の制限は時間の問題です。技術の急速な進歩により、半年以内には次世代ツールでこれらの課題が解決され、さらに高品質な動画制作が可能になるでしょう。
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
